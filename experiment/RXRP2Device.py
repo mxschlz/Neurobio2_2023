@@ -6,6 +6,7 @@ from labplatform.core import TDTblackbox as tdt
 import logging
 import os
 import numpy as np
+import time
 
 log = logging.getLogger(__name__)
 
@@ -50,7 +51,6 @@ class RX8RP2Device(Device):
                         format(TDT_freq, self.setting.device_freq))
             # self.setting.device_freq = self.handle.GetSFreq()
 
-
     def _configure(self, **kwargs):
         pass
 
@@ -64,6 +64,11 @@ class RX8RP2Device(Device):
         self.RP2.halt()
         self.RX8.halt()
 
+    def wait_for_button(self):  # stops the circuit as long as no button is being pressed
+        log.info("Waiting for button press ...")
+        while not self.handle.GetTagVal("response"):
+            time.sleep(0.1)  # sleeps while the response tag in the rcx circuit does not yield 1
+
     def get_response(self):  # collects response, preferably called right after wait_for_button
         log.info("Acquiring button response ... ")
         # because the response is stored in bit value, we need the base 2 log
@@ -73,8 +78,14 @@ class RX8RP2Device(Device):
             response = self.RP2.GetTagVal("response")
         return response
 
-    def thread_run(self):
-        pass
+    def thread_func(self):
+        if self.experiment:
+            if self.experiment().sequence.this_trial != 0:
+                if int(round(time.time() - self.experiment().time_0, 3) * 1000) > 1000:
+                    self.experiment().process_event({'trial_stop': 0})
+            elif self.experiment().sequence.this_trial != 0:
+                if self.RP2.GetTagVal("response") > 0:
+                    self.experiment().process_event({'trial_stop': 0})
 
 
 if __name__ == "__main__":
