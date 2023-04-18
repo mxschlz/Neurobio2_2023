@@ -116,8 +116,6 @@ class VocodingExperiment(ExperimentLogic):
 
 
 if __name__ == "__main__":
-    # get logger
-    log = logging.getLogger()
     log.setLevel(logging.DEBUG)
     # create console handler and set level to debug
     ch = logging.StreamHandler()
