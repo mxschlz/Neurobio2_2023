@@ -11,6 +11,9 @@ import time
 log = logging.getLogger(__name__)
 
 
+# TODO: try loading circuit only on the RX82
+
+
 class RX8RP2DeviceSetting(DeviceSetting):
     device_freq = Float(48828, group='status', dsec='sampling frequency of the device (Hz)')
     rcx_file_RP2 = Str('play_buf.rcx', group='status', dsec='the rcx file for RP2')
@@ -18,7 +21,7 @@ class RX8RP2DeviceSetting(DeviceSetting):
     processor_RP2 = Str('RP2', group='status', dsec='name of the processor')
     processor_RX8 = Str('RX8', group='status', dsec='name of the processor')
     connection = Str('GB', group='status', dsec='Type of the processor connection')
-    rx8index = Int(2, group='primary', dsec='index of the device to connect to')
+    rx8index = Int([1, 2], group='primary', dsec='index of the device to connect to')
     max_stim_length_n = Int(500000, group='status', dsec='maximum length for stimulus in number of data points')
     device_type = 'RX8RP2Device'
 
@@ -33,7 +36,8 @@ class RX8RP2Device(Device):
     def _initialize(self, **kwargs):
         expdir = os.path.join(get_config('DEVICE_ROOT'), "neurobio2_2023")
         self.handle = tdt.Processors()
-        self.handle.initialize(proc_list=[["RX82", "RX8", os.path.join(expdir, self.setting.rcx_file_RX8)],
+        self.handle.initialize(proc_list=[["RX81", "RX8", os.path.join(expdir, self.setting.rcx_file_RX8)],
+                                          ["RX82", "RX8", os.path.join(expdir, self.setting.rcx_file_RX8)],
                                           ["RP2", "RP2", os.path.join(expdir, self.setting.rcx_file_RP2)]],
                                connection=self.setting.connection,
                                zbus=True)
@@ -64,10 +68,20 @@ class RX8RP2Device(Device):
             response = self.handle.read("response", proc="RP2")
         return response
 
+    def wait_to_finish_playing(self, proc="all", tag="playback"):
+        if proc == "all":
+            proc = list(self.handle.procs.keys())
+        elif isinstance(proc, str):
+            proc = [proc]
+        logging.info(f'Waiting for {tag} on {proc}.')
+        while any(self.handle.read(tag, proc=p) for p in proc):
+            time.sleep(0.01)
+        log.info('Done waiting.')
+
     def thread_func(self):
         if self.experiment:
             if self.experiment().sequence.this_trial != 0:
-                if int(round(time.time() - self.experiment().time_0, 3) * 1000) > 1000:
+                if int(round(time.time() - self.experiment().time_0, 3)) > self.experiment().setting.trial_watch:
                     self.experiment().process_event({'trial_stop': 0})
             elif self.experiment().sequence.this_trial == 0:
                 if self.handle.read("response", proc="RP2") > 0:

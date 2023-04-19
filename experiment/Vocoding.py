@@ -18,13 +18,15 @@ from experiment.config import vocoding_config
 log = logging.getLogger(__name__)
 cfg = vocoding_config
 
+# TODO: try loading circuit only on the RX82
+
 
 class VocodingSetting(ExperimentSetting):
 
     experiment_name = Str('Vocoding', group='status', dsec='name of the experiment', noshow=True)
     conditions = Int(cfg.conditions, group="primary", dsec="Number of different vocoding bandwidths")
     trial_number = Int(cfg.trial_number, group='status', dsec='Number of trials in each condition')
-    stim_duration = Float(cfg.stim_duration, group='status', dsec='Duration of each stimulus, (s)')
+    trial_watch = Float(cfg.trial_duration, group='status', dsec='Duration of each stimulus, (s)')
     deviant_freq = Float(cfg.deviant_freq, group='status', dsec='Deviant frequency')
     setup = Str("FREEFIELD", group="status", dsec="Name of the experiment setup")
 
@@ -44,7 +46,7 @@ class VocodingExperiment(ExperimentLogic):
     stim_path = os.path.join(get_config("SOUND_ROOT"), "neurobio2_2023\\vocoding", "normalized_2")
     stim_dict = dict()
     sound_to_play = Any()
-    deviant_sound = slab.Binaural.chirp(duration=0.3)  # same length as other stimuli
+    deviant_sound = slab.Binaural.chirp(duration=0.3, samplerate=48828.0)  # same length as other stimuli
     response = Int()
     time_0 = Float()
     rt = Any()
@@ -73,6 +75,8 @@ class VocodingExperiment(ExperimentLogic):
         else:
             self.trig_code = 6  # deviant
         self.devices["RX8RP2"].handle.write("trigcode", self.trig_code, procs="RX82")
+        # print(self.trig_code)
+        # print(self.devices["RX8RP2"].handle.read("trigcode", proc="RX82"))
         if not this_condition == 0:
             self.sound_to_play = random.choice(self.stim_dict[this_condition])
         elif this_condition == 0:
@@ -83,6 +87,7 @@ class VocodingExperiment(ExperimentLogic):
 
     def start_trial(self):
         self.devices["RX8RP2"].start()
+        self.devices["RX8RP2"].wait_to_finish_playing(proc="RP2")
         self.time_0 = time.time()  # starting time of the trial
         # self.sound_to_play.play()
         if self.sequence.this_trial == 0:
@@ -111,8 +116,16 @@ class VocodingExperiment(ExperimentLogic):
     def load_to_buffer(self, sound):
         left = sound.channel(0).data.flatten()
         right = sound.channel(1).data.flatten()
+        self.devices["RX8RP2"].handle.write("playbuflen", sound.n_samples, "RP2")
         self.devices["RX8RP2"].handle.write("data_l", left, "RP2")
         self.devices["RX8RP2"].handle.write("data_r", right, "RP2")
+
+    """
+    def clear_buffer(self):
+        buffer_size = self.setting.trial_watch * self.devices["RX8RP2"].setting.device_freq
+        self.devices["RX8RP2"].handle.write("data_l", left, "RP2")
+        self.devices["RX8RP2"].handle.write("data_r", right, "RP2")
+    """
 
 
 if __name__ == "__main__":
@@ -128,7 +141,7 @@ if __name__ == "__main__":
     log.addHandler(ch)
 
     # initialize subject
-    subject = Subject(name="subject", group="EEG", species="Human")
+    subject = Subject(name="Test", group="EEG", species="Human")
     subject.data_path = os.path.join(get_config("DATA_ROOT"), f"{subject.name}.h5")
     try:
         subject.add_subject_to_h5file(os.path.join(get_config("SUBJECT_ROOT"), f"{subject.name}.h5"))
@@ -137,4 +150,4 @@ if __name__ == "__main__":
 
     exp = VocodingExperiment(subject=subject)
     exp.results = slab.ResultsFile(subject=subject.name, folder=get_config("DATA_ROOT"))
-    # exp.start()
+    exp.start()
