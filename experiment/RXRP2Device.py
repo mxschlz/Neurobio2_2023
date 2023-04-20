@@ -21,7 +21,7 @@ class RX8RP2DeviceSetting(DeviceSetting):
     processor_RP2 = Str('RP2', group='status', dsec='name of the processor')
     processor_RX8 = Str('RX8', group='status', dsec='name of the processor')
     connection = Str('GB', group='status', dsec='Type of the processor connection')
-    rx8index = Int([1, 2], group='primary', dsec='index of the device to connect to')
+    rx8index = Int(2, group='primary', dsec='index of the device to connect to')
     max_stim_length_n = Int(500000, group='status', dsec='maximum length for stimulus in number of data points')
     device_type = 'RX8RP2Device'
 

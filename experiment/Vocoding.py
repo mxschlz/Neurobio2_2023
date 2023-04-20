@@ -1,16 +1,13 @@
 from labplatform.core.Setting import ExperimentSetting
 from labplatform.core.ExperimentLogic import ExperimentLogic
 from labplatform.core.Data import ExperimentData
-from labplatform.core.Subject import Subject, SubjectList
+from labplatform.core.Subject import Subject
 from labplatform.config import get_config
 import os
-from traits.api import List, Str, Int, Dict, Float, Any
+from traits.api import Str, Int, Dict, Float, Any
 import slab
 import time
-import numpy as np
 import logging
-import datetime
-import pathlib
 import random
 from experiment.RXRP2Device import RX8RP2Device
 from experiment.config import vocoding_config
@@ -46,7 +43,7 @@ class VocodingExperiment(ExperimentLogic):
     stim_path = os.path.join(get_config("SOUND_ROOT"), "neurobio2_2023\\vocoding", "normalized_2")
     stim_dict = dict()
     sound_to_play = Any()
-    deviant_sound = slab.Binaural.chirp(duration=0.3, samplerate=48828.0)  # same length as other stimuli
+    deviant_sound = slab.Binaural.chirp(duration=0.1, samplerate=48828.0)  # same length as other stimuli
     response = Int()
     time_0 = Float()
     rt = Any()
@@ -86,9 +83,9 @@ class VocodingExperiment(ExperimentLogic):
         self.results.write(this_condition, "condition_this_trial")
 
     def start_trial(self):
+        self.time_0 = time.time()  # starting time of the trial
         self.devices["RX8RP2"].start()
         self.devices["RX8RP2"].wait_to_finish_playing(proc="RP2")
-        self.time_0 = time.time()  # starting time of the trial
         # self.sound_to_play.play()
         if self.sequence.this_trial == 0:
             self.devices["RX8RP2"].wait_for_button()
