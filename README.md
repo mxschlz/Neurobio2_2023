@@ -4,21 +4,23 @@ Welcome to the Neurobiology Practical Course on EEG Experiment Conduction and An
 
 ## Description
 
-The Neurobiology Practical Course on EEG Experiment Conduction and Analysis is a hands-on course designed to teach students how to conduct and analyze EEG experiments. Through a combination of lectures and lab sessions, students will learn the fundamentals of EEG, including electrode placement, data collection, and signal processing. They will also learn how to use software tools for data analysis, including MATLAB and EEGLAB.
-Course Structure
+The Neurobiology Practical Course on EEG Experiment Conduction and Analysis is a hands-on course designed to teach students how to conduct and analyze EEG experiments. Through a combination of lectures and lab sessions, students will learn the fundamentals of EEG, including electrode placement, data collection, and signal processing. They will also learn how to use software tools for data analysis via [MNE-Python](https://mne.tools/stable/index.html).
 
-### The course is divided into X parts:
+## Course Structure
+
+### The course is divided into three parts:
 
 **Introduction to EEG:** In this part, students will learn the basic principles of EEG and how to set up an EEG experiment.
 
-**Data Collection and Processing:** In this part, students will learn how to collect EEG data and process it using software tools like MATLAB and EEGLAB.
+**Data Collection and Processing:** In this part, students will learn how to collect EEG data and process it using software tools like MNE-Python.
 
 **Data Analysis and Interpretation:** In this part, students will learn how to analyze EEG data and interpret their findings.
 
 ## Prerequisites
 
-To take this course, students should have a basic understanding of neurobiology and statistics. They should also have some programming experience, preferably with MATLAB.
-Installation
+To take this course, students should have a basic understanding of neurobiology and data analysis. They should also have some programming experience, preferably with Python.
+
+## Installation
 
 To access the materials for this course, simply clone this repository to your local machine:
 
@@ -32,12 +34,15 @@ The materials for this course are organized into three directories, one for each
 Contributing
 
 If you would like to contribute to this project, please submit a pull request. We welcome contributions from students and instructors alike!
-Credits
 
-This course was developed by [Your Name], [Your University], [Your Department], with contributions from [Your Colleagues]. We would also like to acknowledge the contributions of the open source community, including the creators of MATLAB and EEGLAB.
-License
+## Credits
 
-This course is released under the [Your License] license. See the LICENSE file for more details.
-Contact
+This course was developed by Max Schulz, Jakab Pilaszanovich and Hannah at the University of Leipzig, AG Neurobiologie.
 
-If you have any questions or comments about this course, please contact [Your Name] at [Your Email Address].
+## License
+
+This course is released under the MIT license. See the LICENSE file for more details.
+
+## Contact
+
+If you have any questions or comments about this course, please contact Max Schulz at max.schulz10@web.de
