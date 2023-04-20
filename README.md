@@ -31,7 +31,8 @@ To access the materials for this course, simply clone this repository to your lo
 ## Usage
 
 The materials for this course are organized into three directories, one for each part of the course. Each directory contains a lab manual, data sets, and analysis scripts. To get started, simply read through the lab manual for the first part of the course and follow the instructions. The lab manual will guide you through the steps necessary to complete each lab session.
-Contributing
+
+## Contributing
 
 If you would like to contribute to this project, please submit a pull request. We welcome contributions from students and instructors alike!
 
