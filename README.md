@@ -8,13 +8,13 @@ The Neurobiology Practical Course on EEG Experiment Conduction and Analysis is a
 
 ## Course Structure
 
-### The course is divided into three parts:
+### The course is divided into three weeks:
 
-**Introduction to EEG:** In this part, students will learn the basic principles of EEG and how to set up an EEG experiment.
+**1. Introduction to MNE-Python:** In this week, students will learn the basic principles of EEG data analysis and how to set up an EEG experiment. We will also focus on theory behind the experiment designs.
 
-**Data Collection and Processing:** In this part, students will learn how to collect EEG data and process it using software tools like MNE-Python.
+**2. Data Collection and Processing:** In this week, students will learn how to collect EEG data and process it using software tools like MNE-Python.
 
-**Data Analysis and Interpretation:** In this part, students will learn how to analyze EEG data and interpret their findings.
+**3. Data Analysis and Interpretation:** In this week, students will learn how to analyze EEG data and interpret their findings. On the last day, every group will hold a presentation about what they did over the course of the three weeks.
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ To take this course, students should have a basic understanding of neurobiology 
 To access the materials for this course, simply clone this repository to your local machine:
 
 
-`https://github.com/mxschlz/neurobio2_2023.git
+` git clone https://github.com/mxschlz/neurobio2_2023.git
 `
 
 ## Usage
