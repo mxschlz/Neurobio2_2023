@@ -1,4 +1,5 @@
 # Neurobiology Practical Course on EEG Experiment Conduction and Analysis
+![img.png](img.png)
 
 Welcome to the Neurobiology Practical Course on EEG Experiment Conduction and Analysis! This repository contains all the materials you'll need to complete the course, including lab manuals, data sets, and analysis scripts.
 
