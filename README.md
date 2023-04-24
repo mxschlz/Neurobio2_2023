@@ -39,7 +39,7 @@ If you would like to contribute to this project, please submit a pull request. W
 
 ## Credits
 
-This course was developed by Max Schulz, Jakab Pilaszanovich and Hannah at the University of Leipzig, AG Neurobiologie.
+This course was developed by Max Schulz, Jakab Pilaszanovich and Hannah Ziesenies at the University of Leipzig, AG Neurobiologie.
 
 ## License
 
