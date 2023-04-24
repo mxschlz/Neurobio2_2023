@@ -8,10 +8,14 @@
 
 # Import needed modules
 import mne
+import os
+import matplotlib.pyplot as plt
+plt.style.use(['seaborn-colorblind', 'seaborn-darkgrid'])
+
 
 # calling data_path will automatically download the data:
-data_path = "D:\EEG"
-data_path = mne.datasets.sample.data_path(verbose=True)
+data_path = "D:\\EEG"
+data_path = mne.datasets.sample.data_path(data_path, verbose=True)
 
 # This is the sample data set provided by MNE. MEG data were acquired
 # with a Neuromag VectorView system (Elekta Oy, Helsinki, Finland) with
@@ -28,7 +32,7 @@ data_path = mne.datasets.sample.data_path(verbose=True)
 # it out :)
 
 # load raw data
-raw = mne.io.read_raw_fif(data_path+'/MEG/sample/sample_audvis_raw.fif', preload=True)
+raw = mne.io.read_raw_fif(os.path.join(data_path, "MEG/sample/sample_audvis_raw.fif"), preload=True)
 
 # The MNE data structure does not only contain the sensor time series data but
 # also a lot of meta information.
@@ -54,7 +58,7 @@ raw.plot()
 # 4 	Response to right visual field stimulus
 # 5 	Response to the smiley face
 # 32 Response triggered by the button press
-events = mne.read_events(data_path+'/MEG/sample/sample_audvis_raw-eve.fif')
+events = mne.read_events(os.path.join(data_path, "MEG/sample/sample_audvis_raw-eve.fif"))
 
 # To remove power line noise, we apply a lowpass filter with a 40 Hz cutoff
 raw.filter(None, 40)

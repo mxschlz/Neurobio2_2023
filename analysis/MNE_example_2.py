@@ -11,11 +11,16 @@
 
 # Import needed modules
 import mne
+import os
+import matplotlib.pyplot as plt
+plt.style.use(['seaborn-colorblind', 'seaborn-darkgrid'])
+
 
 # get the example data:
-data_path = mne.datasets.sample.data_path(verbose=True)
-raw = mne.io.read_raw_fif(data_path+'/MEG/sample/sample_audvis_raw.fif', preload=True)
-events = mne.read_events(data_path+'/MEG/sample/sample_audvis_raw-eve.fif')
+data_path = "D:\\EEG"
+data_path = mne.datasets.sample.data_path(data_path, verbose=True)
+raw = mne.io.read_raw_fif(os.path.join(data_path, "MEG/sample/sample_audvis_raw.fif"), preload=True)
+events = mne.read_events(os.path.join(data_path, "MEG/sample/sample_audvis_raw-eve.fif"))
 
 
 ## Let´s do all the previous preprocessing steps (as in MNE_example_1.py)
@@ -56,7 +61,7 @@ epochs.apply_baseline(baseline)
 # On the one hand, an entire channel can be too noisy for analysis. In this case,
 # one should remove it.
 
-raw.plot() # look at the continuous EEG again and identify channels that either show consistently
+raw.plot()  # look at the continuous EEG again and identify channels that either show consistently
 # higher frequencies and higher amplitudes than other channels or no signal at all.
 
 raw.info['bads'] += [] # add names of channels here to mark them as "bad"; e.g. 'EEG 001'
@@ -107,12 +112,12 @@ epochs_auto.plot_drop_log() # summary of rejected epochs per channel
 # interpolated (repaired). Setting the random_state makes the process
 # deterministic so everyone gets the same result.
 
-from autoreject import AutoReject # import the module
-ar=AutoReject(n_interpolate=[3,6,12], random_state=42)
+from autoreject import AutoReject  # import the module
+ar = AutoReject(n_interpolate=[3, 6, 12], random_state=42, n_jobs=-1)
 epochs_ar, reject_log = ar.fit_transform(epochs, return_log=True)
 
 # Lets have a look at what AutoReject did to the data:
-reject_log.plot_epochs(epochs) # one should carefully check that not too much of the data was removed...
+reject_log.plot_epochs(epochs)  # one should carefully check that not too much of the data was removed...
 
 
 # However for now, let´s continue working with the not-fully automatized rejection approach
@@ -165,8 +170,8 @@ epochs_ica.plot()
 epochs = epochs_ica
 
 # Let´s also save the data at this point:
-epochs_fname = 'D:\EEG\datasample_audvis_epo.fif' # enter file path and name here
-epochs.save(epochs_fname, overwrite = True)
+epochs_fname = 'D:\\EEG\\datasample_audvis_epo.fif'  # enter file path and name here
+epochs.save(epochs_fname, overwrite=True)
 
 
 # loading the data again can be done with this command:

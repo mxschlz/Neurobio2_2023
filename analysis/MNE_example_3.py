@@ -1,13 +1,13 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import mne
+import os
 plt.style.use(['seaborn-colorblind', 'seaborn-darkgrid'])
 
-
-raw = mne.io.read_raw_fif(mne.datasets.sample.data_path() +
-                          '/MEG/sample/sample_audvis_raw.fif', preload=True)
-events = mne.read_events(mne.datasets.sample.data_path() +
-                         '/MEG/sample/sample_audvis_raw-eve.fif')
+data_path = "D:\\EEG"
+data_path = mne.datasets.sample.data_path(data_path, verbose=True)
+raw = mne.io.read_raw_fif(os.path.join(data_path, "MEG/sample/sample_audvis_raw.fif"), preload=True)
+events = mne.read_events(os.path.join(data_path, "MEG/sample/sample_audvis_raw-eve.fif"))
 # 1 	Response to left-ear auditory stimulus
 # 2 	Response to right-ear auditory stimulus
 # 3 	Response to left visual field stimulus
@@ -66,7 +66,7 @@ epochs.plot_sensors(show_names=True)
 # Let's compare a few different ones:
 fig, axes = plt.subplots(2, 2)
 epochs.plot_sensors(show_names=["EEG 012", "EEG 017", "EEG 024"],
-                    axes=axes[0, 0])
+                    axes=axes[0, 0], show=False)
 references = [["EEG 012"], ["EEG 017", "EEG 024"], "average"]
 for ref, ax in zip(references, [axes[0, 1], axes[1, 0], axes[1, 1]]):
     epochs.set_eeg_reference(ref)
