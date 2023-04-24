@@ -1,10 +1,15 @@
 import mne
 from matplotlib import pyplot as plt
+import os
 
 # The data for the experiment comes from a study where they showed different words to the subject.
 # You can find the paper here: https://journals.sagepub.com/doi/10.1177/0956797615603934
-path = mne.datasets.kiloword.data_path() + '/kword_metadata-epo.fif'
-epochs = mne.read_epochs(path)
+data_path = "D:\\EEG"
+data_path = mne.datasets.sample.data_path(data_path, verbose=True)
+
+
+mne.datasets.kiloword.data_path(path=data_path)
+epochs = mne.read_epochs("D:\EEG\kword_metadata-epo.fif\MNE-sample-data\kword_metadata-epo.fif\MNE-kiloword-data\kword_metadata-epo.fif")
 time_unit = dict(time_unit="s")
 
 # The words and some metrics describing them are stored in the "metadata" attribute of the epochs
@@ -47,7 +52,7 @@ X = [long_words.get_data().transpose(0, 2, 1),
 # Calculate statistical thresholds. For times sake we are only doing 100 permutations but in a "real" analysis
 # you would at least do 1000.
 t_obs, clusters, cluster_pv, h0 = mne.stats.spatio_temporal_cluster_test(
-    X, threshold=dict(start=.2, step=.2), adjacency=adjacency, n_permutations=100)
+    X, threshold=dict(start=.2, step=.2), adjacency=adjacency, n_permutations=100, n_jobs=-1)
 
 # We can see the number of significant points in the data by summing all the values in the test statistic which
 # have a value smaller .05
