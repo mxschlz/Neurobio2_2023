@@ -41,9 +41,6 @@ If you would like to contribute to this project, please submit a pull request. W
 
 This course was developed by Max Schulz, Jakab Pilaszanovich and Hannah Ziesenies at the University of Leipzig, AG Neurobiologie.
 
-## License
-
-This course is released under the MIT license. See the LICENSE file for more details.
 
 ## Contact
 
